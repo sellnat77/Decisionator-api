@@ -31,7 +31,7 @@ func initDatastores() {
 	dbHost := util.GetEnvVar("DB_HOST")
 	dbPort := util.GetEnvVar("DB_PORT")
 	dbUser := util.GetEnvVar("DB_USER")
-	dbPass := util.GetEnvVar("DB_PASSS")
+	dbPass := util.GetEnvVar("DB_PASS")
 	dbName := util.GetEnvVar("DB_NAME")
 	creds := models.DatastoreCredentials{Host: dbHost, Port: dbPort, User: dbUser, Password: dbPass, DBName: dbName}
 	util.Initialize(creds)
