@@ -6,7 +6,7 @@ import (
 )
 
 func SignIn(w http.ResponseWriter, req *http.Request) {
-
+	enableCors(&w)
 	if req.Method != http.MethodPost {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 		return
