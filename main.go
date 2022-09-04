@@ -4,33 +4,39 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"os"
 
 	"github.com/sellnat77/Decisionator-api/internal/handlers"
-
-	"github.com/joho/godotenv"
+	"github.com/sellnat77/Decisionator-api/internal/models"
+	"github.com/sellnat77/Decisionator-api/internal/util"
 )
 
 func main() {
-	currEnv, err := godotenv.Read()
-	if err != nil {
-		log.Fatal("Error loading .env file")
-	}
 
-	port := getEnvVar("PORT", currEnv)
+	port := util.GetEnvVar("PORT")
 	portString := fmt.Sprintf(":%s", port)
+	initDatastores()
+
 	http.HandleFunc("/helloworld", handlers.HelloWorld)
 	http.HandleFunc("/signup", handlers.SignUp)
-	http.HandleFunc("/signin", handlers.SignIn)
+	http.HandleFunc("/signin", handlers.SignUp)
+	http.HandleFunc("/meet", handlers.Meet)
+	http.HandleFunc("/health", handlers.Healthcheck)
+	http.HandleFunc("/", handlers.Preflight)
 
-	fmt.Printf("Starting server on %s", portString)
+	log.Printf("Starting server on %s", portString)
 	http.ListenAndServe(portString, nil)
 }
 
-func getEnvVar(key string, currEnv map[string]string) string {
-	envVar := os.Getenv(key)
-	if len(envVar) == 0 {
-		return currEnv[key]
+func initDatastores() {
+	dbHost := util.GetEnvVar("DB_HOST")
+	dbPort := util.GetEnvVar("DB_PORT")
+	dbUser := util.GetEnvVar("DB_USER")
+	dbPass := util.GetEnvVar("DB_PASSS")
+	dbName := util.GetEnvVar("DB_NAME")
+	creds := models.DatastoreCredentials{Host: dbHost, Port: dbPort, User: dbUser, Password: dbPass, DBName: dbName}
+	util.Initialize(creds)
+	success := util.CreateUsersTable()
+	if !success {
+		log.Fatal("Users table not created")
 	}
-	return envVar
 }
