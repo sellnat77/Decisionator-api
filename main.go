@@ -20,6 +20,7 @@ func main() {
 	http.HandleFunc("/signup", handlers.SignUp)
 	http.HandleFunc("/signin", handlers.SignUp)
 	http.HandleFunc("/meet", handlers.Meet)
+	http.HandleFunc("/meet/guest", handlers.GuestMeet)
 	http.HandleFunc("/health", handlers.Healthcheck)
 	http.HandleFunc("/", handlers.Preflight)
 
