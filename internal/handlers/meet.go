@@ -38,9 +38,6 @@ func GuestMeet(w http.ResponseWriter, req *http.Request) {
 	midLat := util.CoordLatSum(&inputCoords) / float64(numCoords)
 	midLon := util.CoordLonSum(&inputCoords) / float64(numCoords)
 
-	fmt.Println(midLat, midLon)
-	midpoint := models.Coordinate{midLat, midLon}
-	payload := json.NewEncoder(w).Encode(midpoint)
-
-	fmt.Fprintf(w, payload)
+	midpoint := models.Coordinate{Lat: midLat, Lon: midLon}
+	json.NewEncoder(w).Encode(midpoint)
 }
