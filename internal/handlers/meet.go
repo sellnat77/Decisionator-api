@@ -19,6 +19,11 @@ func Meet(w http.ResponseWriter, req *http.Request) {
 }
 
 func GuestMeet(w http.ResponseWriter, req *http.Request) {
+	enableCors(&w)
+	if req.Method == http.MethodOptions {
+		w.WriteHeader(http.StatusOK)
+		return
+	}
 	if req.Method != http.MethodPost {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 		return
